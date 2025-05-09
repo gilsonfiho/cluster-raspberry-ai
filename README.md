@@ -150,11 +150,88 @@ curl http://localhost:11434/api/generate -d '{
 - [x] Modelo Qwen3:0.6b testado com 1.9 GB RAM
 - [x] Modelo Qwen3:1.7b testado com 3.1 GB RAM
 - [ ] Testes com o N8N usando a master do Cluster e Docker
-- [ ] Painel Web via Docker
 
 
 ## 🤖Atualizações de Configurações, Testes, Relatórios e Scripts Automaatizados em breve
 
 
+## 🧠 Integração com N8N para Agentes de IA
 
+O cluster agora também suporta o [N8N](https://n8n.io), uma plataforma de automação de fluxos que permite integrar e orquestrar tarefas automatizadas. Com essa integração, é possível utilizar a API do Ollama local para criar agentes de IA diretamente nos fluxos do N8N.
+
+### 📦 Atualização do `docker-compose.yml`
+
+```yaml
+version: "3.8"
+
+services:
+  ollama:
+    image: ollama/ollama
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama:/root/.ollama
+    deploy:
+      replicas: 1
+      placement:
+        constraints:
+          - node.hostname == rpi-master
+
+  n8n:
+    image: n8nio/n8n:latest
+    ports:
+      - "5678:5678"
+    environment:
+      - N8N_BASIC_AUTH_ACTIVE=true
+      - N8N_BASIC_AUTH_USER=admin
+      - N8N_BASIC_AUTH_PASSWORD=admin123
+      - N8N_HOST=localhost
+      - N8N_PORT=5678
+    volumes:
+      - n8n_data:/home/node/.n8n
+    deploy:
+      replicas: 1
+      placement:
+        constraints:
+          - node.hostname == rpi-master
+
+volumes:
+  ollama:
+  n8n_data:
+
+
+### 🚀 Deploy da Stack com N8N
+
+Execute no nó master do cluster:
+
+```bash
+docker stack deploy -c docker-compose.yml llm-cluster
+```
+
+Verifique os serviços ativos:
+
+```bash
+docker service ls
+```
+
+Acesse o N8N via navegador em:
+
+```
+http://<IP_DO_MASTER>:5678
+```
+
+- **Usuário**: `admin`
+- **Senha**: `admin123`
+
+> O serviço `ollama` pode ser chamado diretamente como `http://ollama:11434` dentro do fluxo no N8N, pois ambos estão na mesma rede Docker.
+
+---
+
+### ✅ Status Atualizado
+
+- [x] Ollama rodando via Docker Swarm
+- [x] Modelos Qwen3:0.6b e Qwen3:1.7b testados com sucesso
+- [x] N8N adicionado à stack com autenticação básica
+- [x] Fluxo de automação com IA usando o modelo local do Ollama no N8N
+- [ ] Painel web integrado com interface personalizada (em desenvolvimento)
 
