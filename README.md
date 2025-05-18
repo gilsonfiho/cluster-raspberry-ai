@@ -1,4 +1,4 @@
-﻿# Cluster Raspberry Pi com Ollama e Docker
+﻿# Cluster Raspberry Pi para estudos de projetos com IA, LLMs, Docker, etc
 
 
 Este repositório documenta o desenvolvimento de um cluster de Raspberry Pi para rodar modelos de linguagem como o Qwen3 via [Ollama](https://ollama.com), com otimizações de memória usando ZRAM e swap.
