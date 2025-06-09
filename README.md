@@ -149,7 +149,7 @@ curl http://localhost:11434/api/generate -d '{
 - [x] Ollama rodando via
 - [x] Modelo Qwen3:0.6b testado com 1.9 GB RAM
 - [x] Modelo Qwen3:1.7b testado com 3.1 GB RAM
-- [ ] Testes com o N8N usando a master do Cluster e Docker
+- [x] Testes com o N8N usando a master do Cluster e Docker
 
 
 ## 🤖Atualizações de Configurações, Testes, Relatórios e Scripts Automaatizados em breve
