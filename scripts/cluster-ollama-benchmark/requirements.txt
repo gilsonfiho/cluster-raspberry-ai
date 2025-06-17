@@ -1,0 +1,7 @@
+psutil
+ollama
+pandas
+matplotlib
+markdown2
+reportlab
+pyyaml
