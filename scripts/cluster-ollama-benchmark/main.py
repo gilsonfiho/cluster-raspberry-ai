@@ -62,8 +62,8 @@ def main():
     with open('config.yaml', 'r') as file:
         config = yaml.safe_load(file)
 
-    memory_limit = config.get("memory_threshold_mb", 2500)
-    prompt = config.get("prompt", "Qual é a capital da França?")
+    memory_limit = config.get("memory_threshold_mb", 3500)
+    prompt = config.get("prompt", "Explique brevemente o que é aprendizado de máquina?")
 
     print(f"🚀 Benchmark com limite de memória {memory_limit} MB")
     print(f"🧠 Prompt usado: {prompt}")
