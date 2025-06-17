@@ -1,70 +1,93 @@
-import os
-import yaml
-import pandas as pd
 import ollama
-from benchmarks.performance_test import check_model_viability, run_benchmark_for_model
-
-
-def load_config():
-    with open("config.yaml", "r") as f:
-        return yaml.safe_load(f)
+import time
+import yaml
 
 
 def list_viable_models(memory_threshold_mb):
-    models = ollama.list()
+    response = ollama.list()
+
+    if isinstance(response, dict) and 'models' in response:
+        models = response['models']
+    else:
+        models = response
 
     if not models:
         print("❌ Nenhum modelo encontrado. Verifique se o Ollama está rodando e se há modelos instalados.")
         exit(1)
 
+    model_names = []
+    for m in models:
+        name = m.get("name") or m.get("model")
+        size = m.get("size", 0) / (1024 * 1024)  # Bytes → MB
+        if name and size <= memory_threshold_mb:
+            model_names.append(name)
+
+    return model_names
+
+
+def run_benchmark(model, prompt):
+    start_time = time.time()
+
     try:
-        models = [m["name"] for m in models]
-    except KeyError as e:
-        print(f"❌ Erro na estrutura dos dados retornados: {e}")
-        print(f"Conteúdo retornado: {models}")
-        exit(1)
+        response = ollama.chat(
+            model=model,
+            messages=[{"role": "user", "content": prompt}]
+        )
+        end_time = time.time()
 
-    viable_models = []
-    for model in models:
-        info = ollama.show(model)
-        size_mb = info.get("size", 0) / (1024 * 1024)
-        if size_mb <= memory_threshold_mb:
-            viable_models.append(model)
-    return viable_models
+        output = response['message']['content']
+        elapsed = end_time - start_time
 
+        return {
+            "model": model,
+            "output": output,
+            "time_seconds": round(elapsed, 2)
+        }
+
+    except Exception as e:
+        print(f"❌ Erro ao rodar {model}: {e}")
+        return {
+            "model": model,
+            "output": "Erro",
+            "time_seconds": None
+        }
 
 
 def main():
-    config = load_config()
+    # 🔧 Carregar configurações
+    with open('config.yaml', 'r') as file:
+        config = yaml.safe_load(file)
 
-    output_folder = config["output_folder"]
-    os.makedirs(output_folder, exist_ok=True)
+    memory_limit = config.get("memory_threshold_mb", 2500)
+    prompt = config.get("prompt", "Qual é a capital da França?")
 
-    models = list_viable_models(config["memory_threshold_mb"])
+    print(f"🚀 Benchmark com limite de memória {memory_limit} MB")
+    print(f"🧠 Prompt usado: {prompt}")
+
+    # 🔍 Listar modelos possíveis
+    models = list_viable_models(memory_limit)
+    print(f"✅ Modelos viáveis: {models}")
 
     if not models:
-        print("🚫 Nenhum modelo viável encontrado no cluster.")
+        print("⚠️ Nenhum modelo disponível dentro do limite de memória.")
         return
-
-    print(f"🧠 Modelos viáveis encontrados: {models}")
 
     results = []
 
     for model in models:
-        metrics = run_benchmark_for_model(
-            model,
-            prompt=config["task_prompt"],
-            interval=config["cpu_sample_interval"]
-        )
-        results.append(metrics)
+        print(f"⏳ Testando {model} ...")
+        result = run_benchmark(model, prompt)
+        results.append(result)
+        print(f"✔️ {model} respondeu em {result['time_seconds']}s")
 
-    df = pd.DataFrame(results)
-    print(df)
-
-    df.to_csv(f"{output_folder}/benchmark_results.csv", index=False)
-    df.to_markdown(f"{output_folder}/benchmark_report.md")
-
-    print(f"✅ Relatórios salvos em '{output_folder}'")
+    # 📜 Gerar relatório
+    print("\n📊 Resultado Final:")
+    print("-" * 50)
+    for r in results:
+        print(f"🧠 {r['model']}")
+        print(f"⏱️ Tempo: {r['time_seconds']}s")
+        print(f"➡️ Resposta: {r['output']}")
+        print("-" * 50)
 
 
 if __name__ == "__main__":
