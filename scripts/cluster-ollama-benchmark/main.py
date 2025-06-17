@@ -6,21 +6,25 @@ import yaml
 def list_viable_models(memory_threshold_mb):
     response = ollama.list()
 
-    if isinstance(response, dict) and 'models' in response:
-        models = response['models']
-    else:
-        models = response
-
-    if not models:
-        print("❌ Nenhum modelo encontrado. Verifique se o Ollama está rodando e se há modelos instalados.")
-        exit(1)
+    print(f"DEBUG MODELS RESPONSE: {response}")  # 🔍 Debug opcional
 
     model_names = []
-    for m in models:
-        name = m.get("name") or m.get("model")
-        size = m.get("size", 0) / (1024 * 1024)  # Bytes → MB
-        if name and size <= memory_threshold_mb:
-            model_names.append(name)
+
+    # Se a resposta for uma lista de tuplas
+    if isinstance(response, list) and isinstance(response[0], tuple):
+        model_names = [item[0] for item in response]
+
+    # Se vier como dicionário (modelos recentes da API)
+    elif isinstance(response, dict) and 'models' in response:
+        model_names = [m.get("name") or m.get("model") for m in response['models']]
+
+    # Se vier como lista de dicionários (outra variante)
+    elif isinstance(response, list) and isinstance(response[0], dict):
+        model_names = [m.get("name") or m.get("model") for m in response]
+
+    else:
+        print("❌ Formato desconhecido da resposta do Ollama:", response)
+        exit(1)
 
     return model_names
 
