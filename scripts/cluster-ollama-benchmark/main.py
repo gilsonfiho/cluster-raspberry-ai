@@ -3,31 +3,19 @@ import time
 import yaml
 
 
-def list_viable_models(memory_threshold_mb):
-    response = ollama.list()
+def list_viable_models(memory_limit):
+    models = ollama.list().models
 
-    print(f"DEBUG MODELS RESPONSE: {response}")  # 🔍 Debug opcional
+    print(f"DEBUG MODELS RESPONSE: models={models}")
 
-    model_names = []
+    viable = []
+    for m in models:
+        name = getattr(m, 'model', None)
+        size = getattr(m, 'size', 0)
+        if name and size <= memory_limit * 1024 * 1024:
+            viable.append(name)
 
-    # Se a resposta for uma lista de tuplas
-    if isinstance(response, list) and isinstance(response[0], tuple):
-        model_names = [item[0] for item in response]
-
-    # Se vier como dicionário (modelos recentes da API)
-    elif isinstance(response, dict) and 'models' in response:
-        model_names = [m.get("name") or m.get("model") for m in response['models']]
-
-    # Se vier como lista de dicionários (outra variante)
-    elif isinstance(response, list) and isinstance(response[0], dict):
-        model_names = [m.get("name") or m.get("model") for m in response]
-
-    else:
-        print("❌ Formato desconhecido da resposta do Ollama:", response)
-        exit(1)
-
-    return model_names
-
+    return viable
 
 def run_benchmark(model, prompt):
     start_time = time.time()
