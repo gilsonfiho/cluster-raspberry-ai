@@ -10,21 +10,28 @@ def load_config():
         return yaml.safe_load(f)
 
 
-def list_viable_models(mem_threshold):
-    """Lista os modelos que estão instalados e podem ser testados."""
-    models = ollama.list()["models"]
-    models = [m["name"] for m in models]
-    viable = []
+def list_viable_models(memory_threshold_mb):
+    models = ollama.list()
 
-    print(f"🔍 Verificando modelos instalados: {models}")
+    if not models:
+        print("❌ Nenhum modelo encontrado. Verifique se o Ollama está rodando e se há modelos instalados.")
+        exit(1)
 
+    try:
+        models = [m["name"] for m in models]
+    except KeyError as e:
+        print(f"❌ Erro na estrutura dos dados retornados: {e}")
+        print(f"Conteúdo retornado: {models}")
+        exit(1)
+
+    viable_models = []
     for model in models:
-        if check_model_viability(model, mem_threshold):
-            viable.append(model)
-        else:
-            print(f"⚠️ Modelo {model} removido do benchmark por falta de recursos.")
+        info = ollama.show(model)
+        size_mb = info.get("size", 0) / (1024 * 1024)
+        if size_mb <= memory_threshold_mb:
+            viable_models.append(model)
+    return viable_models
 
-    return viable
 
 
 def main():
