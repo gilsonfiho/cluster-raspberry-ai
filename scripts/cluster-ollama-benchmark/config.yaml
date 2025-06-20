@@ -2,5 +2,3 @@ memory_threshold_mb: 3500
 task_prompt: "Qual é a capital do Brasil?"
 cpu_sample_interval: 0.2
 output_folder: "reports"
-exclude_models:
-models_to_simulate:

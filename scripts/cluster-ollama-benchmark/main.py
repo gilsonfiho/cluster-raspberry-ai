@@ -4,6 +4,7 @@ import os
 import time
 from benchmarks.performance_test import run_test_on_model
 
+
 # 🔧 Carregar configuração
 with open('config.yaml', 'r') as file:
     config = yaml.safe_load(file)
@@ -25,17 +26,17 @@ timestamp = time.strftime("%Y%m%d_%H%M%S")
 report_path = os.path.join(OUTPUT_FOLDER, f"benchmark_report_{timestamp}.txt")
 
 # 🔍 Obter lista de modelos
-all_models = client.list()
+all_models = client.list()['models']
 
-print(f"Modelos disponíveis: {[m[0] for m in all_models]}")
+print(f"Modelos disponíveis: {[m['name'] for m in all_models]}")
 
 # 🔬 Filtrar por limite de memória
 filtered_models = [
     m for m in all_models
-    if m[1] / (1024 * 1024) <= MEMORY_THRESHOLD
+    if m['size'] / (1024 * 1024) <= MEMORY_THRESHOLD
 ]
 
-print(f"Modelos selecionados para simulação: {[m[0] for m in filtered_models]}")
+print(f"Modelos selecionados para simulação: {[m['name'] for m in filtered_models]}")
 
 # 📝 Iniciar relatório
 with open(report_path, 'w') as report:
@@ -47,7 +48,7 @@ with open(report_path, 'w') as report:
     report.write("---------------------------------------------------------------\n")
 
     for model in filtered_models:
-        model_id = model[0]
+        model_id = model['name']
         print(f"\n🚀 Testando modelo: {model_id}")
 
         result = run_test_on_model(
