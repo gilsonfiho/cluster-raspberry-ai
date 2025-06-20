@@ -35,24 +35,25 @@ client = ollama.Client()
 timestamp = time.strftime("%Y%m%d_%H%M%S")
 report_path = os.path.join(OUTPUT_FOLDER, f"benchmark_report_{timestamp}.txt")
 
-# Obter lista de modelos (lista de tuplas)
-all_models = client.list()
+# Obter lista de modelos - dicionário com lista em 'models'
+response = client.list()
+all_models = response['models']
 
-print(f"Modelos disponíveis: {[m[0] for m in all_models]}")  # m[0] = id, m[1] = size
+print(f"Modelos disponíveis: {[m['id'] for m in all_models]}")
 
 # Filtra modelos conforme config e tamanho
 if MODELS_TO_SIMULATE:
     filtered_models = [
         m for m in all_models
-        if m[0] in MODELS_TO_SIMULATE and m[1] / (1024 * 1024) <= MEMORY_THRESHOLD
+        if m['id'] in MODELS_TO_SIMULATE and m['size'] / (1024 * 1024) <= MEMORY_THRESHOLD
     ]
 else:
     filtered_models = [
         m for m in all_models
-        if m[1] / (1024 * 1024) <= MEMORY_THRESHOLD and m[0] not in EXCLUDE_MODELS
+        if m['size'] / (1024 * 1024) <= MEMORY_THRESHOLD and m['id'] not in EXCLUDE_MODELS
     ]
 
-print(f"Modelos selecionados para simulação: {[m[0] for m in filtered_models]}")
+print(f"Modelos selecionados para simulação: {[m['id'] for m in filtered_models]}")
 
 with open(report_path, 'w') as report:
     report.write(f"=== Benchmark Report ===\n")
@@ -63,7 +64,7 @@ with open(report_path, 'w') as report:
     report.write("---------------------------------------------------------------\n")
 
     for model in filtered_models:
-        model_id = model[0]
+        model_id = model['id']
         print(f"\n🚀 Testando modelo: {model_id}")
 
         result = run_test_on_model(
