@@ -25,16 +25,16 @@ timestamp = time.strftime("%Y%m%d_%H%M%S")
 report_path = os.path.join(OUTPUT_FOLDER, f"benchmark_report_{timestamp}.txt")
 
 # 🚀 Obter lista de modelos
-models = client.list()['models']
-print(f"Modelos disponíveis: {[m['name'] for m in models]}")
+models = client.list()
+print(f"Modelos disponíveis: {[m.id for m in models]}")
 
 # 🔍 Filtrar modelos por limite de memória
 filtered_models = [
     m for m in models
-    if m['size'] / (1024 * 1024) <= MEMORY_THRESHOLD and m['name'] not in EXCLUDE_MODELS
+    if m.size / (1024 * 1024) <= MEMORY_THRESHOLD and m.id not in EXCLUDE_MODELS
 ]
 
-print(f"Modelos selecionados: {[m['name'] for m in filtered_models]}")
+print(f"Modelos selecionados: {[m.id for m in filtered_models]}")
 
 # 📝 Gerar relatório
 with open(report_path, 'w') as report:
