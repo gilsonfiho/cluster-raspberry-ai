@@ -1,59 +1,41 @@
 import time
-import psutil
 import ollama
-from benchmarks.cpu_mem_monitor import ResourceMonitor
-
-def check_model_viability(model, mem_threshold=600):
-    """Verifica se o modelo é carregável no cluster."""
-    try:
-        mem = psutil.virtual_memory()
-        if mem.available < mem_threshold * 1024 * 1024:
-            print(f"🚫 Memória insuficiente para testar {model}")
-            return False
-
-        print(f"🚀 Testando carregamento do modelo {model}...")
-        response = ollama.chat(
-            model=model,
-            messages=[{"role": "user", "content": "Diga apenas: OK"}],
-            stream=False,
-        )
-        if "OK" in response['message']['content']:
-            print(f"✅ Modelo {model} respondeu corretamente.")
-            return True
-        else:
-            return False
-    except Exception as e:
-        print(f"⚠️ Erro ao testar {model}: {e}")
-        return False
+from .cpu_mem_monitor import ResourceMonitor
 
 
-def run_benchmark_for_model(model, prompt, interval=0.2):
-    """Executa benchmark de um modelo."""
-    print(f"▶️ Rodando benchmark para {model}")
+def run_test_on_model(model_name, prompt, monitor_interval=0.5):
+    client = ollama.Client()
 
-    monitor = ResourceMonitor(interval)
+    monitor = ResourceMonitor(interval=monitor_interval)
     monitor.start()
 
-    start_time = time.time()
+    start = time.time()
+    try:
+        response = client.generate(
+            model=model_name,
+            prompt=prompt,
+            stream=False
+        )
+        end = time.time()
 
-    response = ollama.chat(
-        model=model,
-        messages=[{"role": "user", "content": prompt}],
-        stream=False,
-    )
+        monitor.stop()
 
-    end_time = time.time()
+        ram_usage, cpu_usage = monitor.get_usage()
+        duration = round(end - start, 2)
 
-    monitor.stop()
+        result_text = response.get("response", "").strip()
 
-    metrics = {
-        "model": model,
-        "latency_s": round(end_time - start_time, 2),
-        "cpu_mean": monitor.cpu_mean,
-        "cpu_peak": monitor.cpu_peak,
-        "ram_mean_mb": monitor.ram_mean,
-        "ram_peak_mb": monitor.ram_peak,
-        "output": response["message"]["content"]
-    }
+        return {
+            "success": True,
+            "duration": duration,
+            "ram_mb": ram_usage,
+            "cpu_percent": cpu_usage,
+            "output": result_text,
+        }
 
-    return metrics
+    except Exception as e:
+        monitor.stop()
+        return {
+            "success": False,
+            "error": str(e)
+        }
