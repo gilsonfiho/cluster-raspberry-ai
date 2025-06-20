@@ -2,8 +2,8 @@ import yaml
 import ollama
 import os
 import time
-from benchmarks.performance_test import run_test_on_model
 import textwrap
+from benchmarks.performance_test import run_test_on_model
 
 # --- Configurações
 with open('config.yaml', 'r') as file:
@@ -20,32 +20,44 @@ client = ollama.Client()
 timestamp = time.strftime("%Y%m%d_%H%M%S")
 report_path = os.path.join(OUTPUT_FOLDER, f"benchmark_report_{timestamp}.txt")
 
+# Listar todos os modelos disponíveis
 all_models_response = client.list()
 models_list = all_models_response.models
 
+# Filtrar modelos pelo limite de memória
 filtered_models = [
     m for m in models_list if (m.size / (1024 * 1024)) <= MEMORY_THRESHOLD
 ]
 
-# Dicionário para guardar os resultados de cada modelo para evitar executar duas vezes
+# Dicionário para guardar os resultados
 results_cache = {}
 
-# Rodar o benchmark para cada modelo e guardar resultados
+print(f"\n🎯 Iniciando benchmark para {len(filtered_models)} modelos...")
+
 for model in filtered_models:
     model_id = model.model
     print(f"\n🚀 Testando modelo: {model_id}")
+
     result = run_test_on_model(
         model_id,
         prompt=PROMPT,
         monitor_interval=MONITOR_INTERVAL
     )
+
+    # DEBUG: imprimir o resultado retornado pela função para checar resposta
+    print(f"DEBUG - Resultado para {model_id}: keys={list(result.keys())}")
+    if "response" in result:
+        print(f"DEBUG - Resposta (primeiros 100 chars): {result['response'][:100]!r}")
+    else:
+        print("DEBUG - Resposta não encontrada no resultado!")
+
     results_cache[model_id] = result
 
-# --- Cabeçalho da tabela
+# --- Montar relatório
 header = f"{'Modelo':<20} | {'Tempo(s)':<8} | {'RAM(MB)':<7} | {'CPU(%)':<6} | {'Status':<10} | Resposta resumida"
 separator = "-" * 110
 
-with open(report_path, 'w') as report:
+with open(report_path, 'w', encoding='utf-8') as report:
     report.write(f"=== Benchmark Report ===\n")
     report.write(f"Data: {time.strftime('%Y-%m-%d %H:%M:%S')}\n\n")
     report.write(f"Prompt utilizado: \"{PROMPT}\"\n\n")
@@ -57,14 +69,14 @@ with open(report_path, 'w') as report:
         model_id = model.model
         result = results_cache[model_id]
 
-        status = "Sucesso" if result.get("success") else f"Falha ({result.get('error')[:10]})"
+        status = "Sucesso" if result.get("success") else f"Falha ({result.get('error','')[0:20]})"
         duration = f"{result.get('duration', '-'):.2f}" if result.get("duration") else "-"
         ram = f"{result.get('ram_mb', '-'):.1f}" if result.get("ram_mb") else "-"
         cpu = f"{result.get('cpu_percent', '-'):.1f}" if result.get("cpu_percent") else "-"
-        response = result.get("response", "").replace('\n', ' ')  # resposta sem quebras de linha
+        response = result.get("response", "").replace('\n', ' ').strip()
         response_summary = (response[:60] + "...") if len(response) > 60 else response
 
-        # Linha da tabela
+        # Linha da tabela resumida
         report.write(f"{model_id:<20} | {duration:<8} | {ram:<7} | {cpu:<6} | {status:<10} | {response_summary}\n")
 
     report.write(separator + "\n\n")
@@ -73,8 +85,9 @@ with open(report_path, 'w') as report:
     for model in filtered_models:
         model_id = model.model
         result = results_cache[model_id]
+
+        status = "Sucesso" if result.get("success") else f"Falha ({result.get('error','')[0:20]})"
         response = result.get("response", "")
-        status = "Sucesso" if result.get("success") else f"Falha ({result.get('error')[:10]})"
 
         report.write(f"=== Modelo: {model_id} ===\n")
         report.write(f"Status: {status}\n")
