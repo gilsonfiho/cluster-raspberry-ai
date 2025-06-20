@@ -18,18 +18,13 @@ client = ollama.Client()
 timestamp = time.strftime("%Y%m%d_%H%M%S")
 report_path = os.path.join(OUTPUT_FOLDER, f"benchmark_report_{timestamp}.txt")
 
+# Obter ListResponse
 all_models_response = client.list()
 
-print(f"Retorno completo de client.list():\n{all_models_response}")
-print(f"Chaves disponíveis: {list(all_models_response.keys())}")
+# Acessar lista real de modelos
+models_list = all_models_response.models  # atributo .models
 
-models_list = all_models_response.get('models', [])
-
-print(f"Tipo de models_list: {type(models_list)}")
-print(f"Quantidade de modelos: {len(models_list)}")
-print(f"Primeiro modelo: {models_list[0]}")
-
-print(f"Modelos disponíveis: {[m.model if hasattr(m, 'model') else m[0] for m in models_list]}")
+print(f"Modelos disponíveis: {[m.model for m in models_list]}")
 
 filtered_models = [
     m for m in models_list if (m.size / (1024 * 1024)) <= MEMORY_THRESHOLD
