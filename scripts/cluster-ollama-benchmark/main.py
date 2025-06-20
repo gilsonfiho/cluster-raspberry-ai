@@ -4,42 +4,34 @@ import os
 import time
 from benchmarks.performance_test import run_test_on_model
 
-
-# 🔧 Carregar configuração
 with open('config.yaml', 'r') as file:
     config = yaml.safe_load(file)
 
-# 🎯 Ler parâmetros do YAML
 MEMORY_THRESHOLD = config['memory_threshold_mb']
 PROMPT = config['task_prompt']
 MONITOR_INTERVAL = config['cpu_sample_interval']
 OUTPUT_FOLDER = config['output_folder']
 
-# 📂 Criar pasta de saída
 os.makedirs(OUTPUT_FOLDER, exist_ok=True)
-
-# 🚀 Inicializar cliente Ollama
 client = ollama.Client()
 
-# 🕑 Gerar timestamp
 timestamp = time.strftime("%Y%m%d_%H%M%S")
 report_path = os.path.join(OUTPUT_FOLDER, f"benchmark_report_{timestamp}.txt")
 
-# 🔍 Obter lista de modelos
 all_models = client.list()
 
-# ✔️ Mostrar modelos disponíveis
-print(f"Modelos disponíveis: {[m.model for m in all_models]}")
+print(f"Tipo do retorno: {type(all_models)}")
+print(f"Tipo do primeiro item: {type(all_models[0])}")
+print(f"Primeiro item: {all_models[0]}")
 
-# 🔬 Filtrar modelos pelo limite de memória
+print(f"Modelos disponíveis: {[m[0] for m in all_models]}")
+
 filtered_models = [
-    m for m in all_models
-    if (m.size / (1024 * 1024)) <= MEMORY_THRESHOLD
+    m for m in all_models if (m[1] / (1024 * 1024)) <= MEMORY_THRESHOLD
 ]
 
-print(f"Modelos selecionados: {[m.model for m in filtered_models]}")
+print(f"Modelos selecionados: {[m[0] for m in filtered_models]}")
 
-# 📝 Criar relatório
 with open(report_path, 'w') as report:
     report.write(f"=== Benchmark Report ===\n")
     report.write(f"Data: {time.strftime('%Y-%m-%d %H:%M:%S')}\n\n")
@@ -49,7 +41,7 @@ with open(report_path, 'w') as report:
     report.write("---------------------------------------------------------------\n")
 
     for model in filtered_models:
-        model_id = model.model
+        model_id = model[0]
         print(f"\n🚀 Testando modelo: {model_id}")
 
         result = run_test_on_model(
