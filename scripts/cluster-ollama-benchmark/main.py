@@ -18,19 +18,24 @@ client = ollama.Client()
 timestamp = time.strftime("%Y%m%d_%H%M%S")
 report_path = os.path.join(OUTPUT_FOLDER, f"benchmark_report_{timestamp}.txt")
 
-all_models = client.list()
+all_models_response = client.list()
 
-print(f"Tipo do retorno: {type(all_models)}")
-print(f"Tipo do primeiro item: {type(all_models[0])}")
-print(f"Primeiro item: {all_models[0]}")
+print(f"Retorno completo de client.list():\n{all_models_response}")
+print(f"Chaves disponíveis: {list(all_models_response.keys())}")
 
-print(f"Modelos disponíveis: {[m[0] for m in all_models]}")
+models_list = all_models_response.get('models', [])
+
+print(f"Tipo de models_list: {type(models_list)}")
+print(f"Quantidade de modelos: {len(models_list)}")
+print(f"Primeiro modelo: {models_list[0]}")
+
+print(f"Modelos disponíveis: {[m.model if hasattr(m, 'model') else m[0] for m in models_list]}")
 
 filtered_models = [
-    m for m in all_models if (m[1] / (1024 * 1024)) <= MEMORY_THRESHOLD
+    m for m in models_list if (m.size / (1024 * 1024)) <= MEMORY_THRESHOLD
 ]
 
-print(f"Modelos selecionados: {[m[0] for m in filtered_models]}")
+print(f"Modelos selecionados: {[m.model for m in filtered_models]}")
 
 with open(report_path, 'w') as report:
     report.write(f"=== Benchmark Report ===\n")
@@ -41,7 +46,7 @@ with open(report_path, 'w') as report:
     report.write("---------------------------------------------------------------\n")
 
     for model in filtered_models:
-        model_id = model[0]
+        model_id = model.model
         print(f"\n🚀 Testando modelo: {model_id}")
 
         result = run_test_on_model(
