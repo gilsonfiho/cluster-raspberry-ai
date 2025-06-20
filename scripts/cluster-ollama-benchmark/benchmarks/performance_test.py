@@ -23,15 +23,20 @@ def run_test_on_model(model_name, prompt, monitor_interval=0.5):
         ram_usage, cpu_usage = monitor.get_usage()
         duration = round(end - start, 2)
 
-        # Corrigido aqui:
-        result_text = str(response.text).strip() if hasattr(response, "text") else ""
+        # ✅ Adaptação correta e funcional:
+        if isinstance(response, dict):
+            result_text = response.get("response", "").strip()
+        elif hasattr(response, "response"):
+            result_text = str(response.response).strip()
+        else:
+            result_text = str(response).strip()
 
         return {
             "success": True,
             "duration": duration,
             "ram_mb": ram_usage,
             "cpu_percent": cpu_usage,
-            "response": result_text,  # chave correta para seu main.py
+            "response": result_text,
         }
 
     except Exception as e:
