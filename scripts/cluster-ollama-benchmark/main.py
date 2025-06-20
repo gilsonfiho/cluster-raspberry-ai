@@ -25,19 +25,20 @@ client = ollama.Client()
 timestamp = time.strftime("%Y%m%d_%H%M%S")
 report_path = os.path.join(OUTPUT_FOLDER, f"benchmark_report_{timestamp}.txt")
 
-# 🔍 Obter lista de modelos (retorna lista de tuplas)
-all_models = client.list()
+# 🔍 Obter lista de modelos
+response = client.list()
+all_models = response['models']  # ✅ ACESSO CORRETO
 
 # ✔️ Mostrar modelos disponíveis
-print(f"Modelos disponíveis: {[m[0] for m in all_models]}")
+print(f"Modelos disponíveis: {[m['name'] for m in all_models]}")
 
 # 🔬 Filtrar por limite de memória
 filtered_models = [
     m for m in all_models
-    if (m[1] / (1024 * 1024)) <= MEMORY_THRESHOLD
+    if (m['size'] / (1024 * 1024)) <= MEMORY_THRESHOLD
 ]
 
-print(f"Modelos selecionados para simulação: {[m[0] for m in filtered_models]}")
+print(f"Modelos selecionados para simulação: {[m['name'] for m in filtered_models]}")
 
 # 📝 Criar relatório
 with open(report_path, 'w') as report:
@@ -49,7 +50,7 @@ with open(report_path, 'w') as report:
     report.write("---------------------------------------------------------------\n")
 
     for model in filtered_models:
-        model_id = model[0]  # Nome do modelo
+        model_id = model['name']
         print(f"\n🚀 Testando modelo: {model_id}")
 
         result = run_test_on_model(
