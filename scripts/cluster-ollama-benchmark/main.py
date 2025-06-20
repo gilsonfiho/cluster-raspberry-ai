@@ -27,6 +27,20 @@ filtered_models = [
     m for m in models_list if (m.size / (1024 * 1024)) <= MEMORY_THRESHOLD
 ]
 
+# Dicionário para guardar os resultados de cada modelo para evitar executar duas vezes
+results_cache = {}
+
+# Rodar o benchmark para cada modelo e guardar resultados
+for model in filtered_models:
+    model_id = model.model
+    print(f"\n🚀 Testando modelo: {model_id}")
+    result = run_test_on_model(
+        model_id,
+        prompt=PROMPT,
+        monitor_interval=MONITOR_INTERVAL
+    )
+    results_cache[model_id] = result
+
 # --- Cabeçalho da tabela
 header = f"{'Modelo':<20} | {'Tempo(s)':<8} | {'RAM(MB)':<7} | {'CPU(%)':<6} | {'Status':<10} | Resposta resumida"
 separator = "-" * 110
@@ -41,13 +55,7 @@ with open(report_path, 'w') as report:
 
     for model in filtered_models:
         model_id = model.model
-        print(f"\n🚀 Testando modelo: {model_id}")
-
-        result = run_test_on_model(
-            model_id,
-            prompt=PROMPT,
-            monitor_interval=MONITOR_INTERVAL
-        )
+        result = results_cache[model_id]
 
         status = "Sucesso" if result.get("success") else f"Falha ({result.get('error')[:10]})"
         duration = f"{result.get('duration', '-'):.2f}" if result.get("duration") else "-"
@@ -64,12 +72,7 @@ with open(report_path, 'w') as report:
     # --- Detalhes completos das respostas
     for model in filtered_models:
         model_id = model.model
-        print(f"Adicionando resposta detalhada para: {model_id}")
-        result = run_test_on_model(
-            model_id,
-            prompt=PROMPT,
-            monitor_interval=MONITOR_INTERVAL
-        )
+        result = results_cache[model_id]
         response = result.get("response", "")
         status = "Sucesso" if result.get("success") else f"Falha ({result.get('error')[:10]})"
 
