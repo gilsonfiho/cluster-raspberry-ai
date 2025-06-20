@@ -21,23 +21,37 @@ os.makedirs(OUTPUT_FOLDER, exist_ok=True)
 # 🚀 Inicializar cliente Ollama
 client = ollama.Client()
 
-# 🕑 Gerar timestamp para nome do relatório
+# 🕑 Gerar timestamp
 timestamp = time.strftime("%Y%m%d_%H%M%S")
 report_path = os.path.join(OUTPUT_FOLDER, f"benchmark_report_{timestamp}.txt")
 
-# 🔍 Obter lista de modelos (lista de tuplas)
-all_models = client.list()
+# 🔍 Obter lista de modelos
+response = client.list()
+
+# ✅ GARANTIR que é um dicionário com chave 'models'
+if 'models' not in response:
+    print("❌ ERRO: Resposta inesperada de client.list()")
+    print(f"Resposta: {response}")
+    exit(1)
+
+all_models = response['models']
+
+# ✅ Verificar se cada modelo é uma lista
+if not all(isinstance(m, list) and len(m) >= 2 for m in all_models):
+    print("❌ ERRO: Formato inesperado dos modelos")
+    print(f"Modelos: {all_models}")
+    exit(1)
 
 # ✔️ Mostrar modelos disponíveis
 print(f"Modelos disponíveis: {[m[0] for m in all_models]}")
 
-# 🔬 Filtrar por limite de memória
+# 🔬 Filtrar modelos pelo limite de memória
 filtered_models = [
     m for m in all_models
-    if (m[1] / (1024 * 1024)) <= MEMORY_THRESHOLD
+    if isinstance(m[1], (int, float)) and (m[1] / (1024 * 1024)) <= MEMORY_THRESHOLD
 ]
 
-print(f"Modelos selecionados para simulação: {[m[0] for m in filtered_models]}")
+print(f"Modelos selecionados: {[m[0] for m in filtered_models]}")
 
 # 📝 Criar relatório
 with open(report_path, 'w') as report:
@@ -49,7 +63,7 @@ with open(report_path, 'w') as report:
     report.write("---------------------------------------------------------------\n")
 
     for model in filtered_models:
-        model_id = model[0]
+        model_id = model[0]  # Nome do modelo
         print(f"\n🚀 Testando modelo: {model_id}")
 
         result = run_test_on_model(
