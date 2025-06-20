@@ -15,31 +15,31 @@ PROMPT = config['task_prompt']
 MONITOR_INTERVAL = config['cpu_sample_interval']
 OUTPUT_FOLDER = config['output_folder']
 
-# 📂 Criar pasta de saída, se não existir
+# 📂 Criar pasta de saída
 os.makedirs(OUTPUT_FOLDER, exist_ok=True)
 
 # 🚀 Inicializar cliente Ollama
 client = ollama.Client()
 
-# 🕑 Timestamp para o relatório
+# 🕑 Gerar timestamp para nome do relatório
 timestamp = time.strftime("%Y%m%d_%H%M%S")
 report_path = os.path.join(OUTPUT_FOLDER, f"benchmark_report_{timestamp}.txt")
 
-# 🔍 Obter lista de modelos (retorna uma lista de objetos)
+# 🔍 Obter lista de modelos (retorna lista de tuplas)
 all_models = client.list()
 
-# ✔️ Exibir modelos disponíveis
-print(f"Modelos disponíveis: {[m.name for m in all_models]}")
+# ✔️ Mostrar modelos disponíveis
+print(f"Modelos disponíveis: {[m[0] for m in all_models]}")
 
-# 🔬 Filtrar modelos por limite de memória
+# 🔬 Filtrar por limite de memória
 filtered_models = [
     m for m in all_models
-    if m.size / (1024 * 1024) <= MEMORY_THRESHOLD
+    if (m[1] / (1024 * 1024)) <= MEMORY_THRESHOLD
 ]
 
-print(f"Modelos selecionados para simulação: {[m.name for m in filtered_models]}")
+print(f"Modelos selecionados para simulação: {[m[0] for m in filtered_models]}")
 
-# 📝 Iniciar relatório
+# 📝 Criar relatório
 with open(report_path, 'w') as report:
     report.write(f"=== Benchmark Report ===\n")
     report.write(f"Data: {time.strftime('%Y-%m-%d %H:%M:%S')}\n\n")
@@ -49,7 +49,7 @@ with open(report_path, 'w') as report:
     report.write("---------------------------------------------------------------\n")
 
     for model in filtered_models:
-        model_id = model.name
+        model_id = model[0]  # Nome do modelo
         print(f"\n🚀 Testando modelo: {model_id}")
 
         result = run_test_on_model(
