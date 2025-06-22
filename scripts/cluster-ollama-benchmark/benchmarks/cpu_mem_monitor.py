@@ -1,38 +1,34 @@
+import psutil
 import threading
 import time
-import psutil
 
-class ResourceMonitor(threading.Thread):
-    def __init__(self, interval=0.2):
-        super().__init__()
+
+class ResourceMonitor:
+    def __init__(self, interval=0.5):
         self.interval = interval
-        self.running = False
-        self.cpu_usage = []
-        self.ram_usage = []
+        self._stop_event = threading.Event()
+        self._thread = None
+        self.max_mem = 0
+        self.max_cpu = 0
 
-    def run(self):
-        self.running = True
-        while self.running:
-            self.cpu_usage.append(psutil.cpu_percent())
-            self.ram_usage.append(psutil.virtual_memory().used / (1024 * 1024))  # MB
+    def _monitor(self):
+        while not self._stop_event.is_set():
+            mem = psutil.virtual_memory().used / (1024 * 1024)  # MB
+            cpu = psutil.cpu_percent(interval=None)
+
+            self.max_mem = max(self.max_mem, mem)
+            self.max_cpu = max(self.max_cpu, cpu)
+
             time.sleep(self.interval)
 
+    def start(self):
+        self._stop_event.clear()
+        self._thread = threading.Thread(target=self._monitor)
+        self._thread.start()
+
     def stop(self):
-        self.running = False
-        self.join()
+        self._stop_event.set()
+        self._thread.join()
 
-    @property
-    def cpu_mean(self):
-        return round(sum(self.cpu_usage) / len(self.cpu_usage), 2) if self.cpu_usage else 0
-
-    @property
-    def cpu_peak(self):
-        return max(self.cpu_usage) if self.cpu_usage else 0
-
-    @property
-    def ram_mean(self):
-        return round(sum(self.ram_usage) / len(self.ram_usage), 2) if self.ram_usage else 0
-
-    @property
-    def ram_peak(self):
-        return round(max(self.ram_usage), 2) if self.ram_usage else 0
+    def get_usage(self):
+        return round(self.max_mem, 2), round(self.max_cpu, 2)
