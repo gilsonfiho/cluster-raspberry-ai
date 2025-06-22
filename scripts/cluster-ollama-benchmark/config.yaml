@@ -1,4 +1,4 @@
 memory_threshold_mb: 3500
+task_prompt: "Qual é a capital do Brasil?"
 cpu_sample_interval: 0.2
-task_prompt: "Explique brevemente o que é aprendizado de máquina."
 output_folder: "reports"
