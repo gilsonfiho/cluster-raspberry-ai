@@ -1,0 +1,183 @@
+=== Benchmark Report ===
+Data: 2025-06-20 16:08:25
+
+Prompt utilizado: "Qual a Capital do Brasil?"
+
+--------------------------------------------------------------------------------------------------------------
+Modelo               | Tempo(s) | RAM(MB) | CPU(%) | Status     | Resposta resumida
+--------------------------------------------------------------------------------------------------------------
+yi-coder:1.5b        | -        | -       | -      | Falha (model requires more ) | 
+starcoder:1b         | 70.65    | 1788.7  | 100.0  | Sucesso    | A. A Capital do Brasil é um mercado de criação para o invest...
+deepseek-coder:1.3b  | -        | -       | -      | Falha (model requires more ) | 
+smollm2:360m         | 26.26    | 2044.8  | 100.0  | Sucesso    | In Portuguese, the capital of Brazil is Brasília.
+tinyllama:1.1b       | 62.54    | 2856.2  | 100.0  | Sucesso    | O país brasileiro é conhecido como "a capital do mundo", poi...
+phi4-mini:latest     | -        | -       | -      | Falha (model requires more ) | 
+orca-mini:3b         | -        | -       | -      | Falha (model requires more ) | 
+llama3.2:1b          | 63.59    | 2556.7  | 100.0  | Sucesso    | A capital do Brasil é Brasília.
+gemma2:2b            | -        | -       | -      | Falha (model requires more ) | 
+qwen3:0.6b           | 68.56    | 2428.6  | 100.0  | Sucesso    | <think> Okay, the user is asking for the capital of Brazil. ...
+llama3.2:latest      | -        | -       | -      | Falha (model requires more ) | 
+qwen3:1.7b           | 301.45   | 3229.8  | 100.0  | Sucesso    | <think> Okay, the user is asking, "Qual a Capital do Brasil?...
+--------------------------------------------------------------------------------------------------------------
+
+=== Modelo: yi-coder:1.5b ===
+Status: Falha (model requires more )
+Tempo(s): -
+RAM(MB): -
+CPU(%): -
+
+Resposta completa:
+
+
+================================================================================
+
+=== Modelo: starcoder:1b ===
+Status: Sucesso
+Tempo(s): 70.65
+RAM(MB): 1788.68
+CPU(%): 100.0
+
+Resposta completa:
+A. A Capital do Brasil é um mercado de criação para o investimento. Cada vez mais pessoas vão
+cadastrando-se no site, assim como seus respectivos interesses. Se você não pode se destacar nessa
+parte das páginas, por favor envie seu comentário abaixo para que ele possa ser aberto para todos.
+[Mais Informações](https://www2.gov.br/pt-br/secretarias/comissao-do-brasil/planos-de-
+investimentos/capital-do-brasil)
+
+================================================================================
+
+=== Modelo: deepseek-coder:1.3b ===
+Status: Falha (model requires more )
+Tempo(s): -
+RAM(MB): -
+CPU(%): -
+
+Resposta completa:
+
+
+================================================================================
+
+=== Modelo: smollm2:360m ===
+Status: Sucesso
+Tempo(s): 26.26
+RAM(MB): 2044.83
+CPU(%): 100.0
+
+Resposta completa:
+In Portuguese, the capital of Brazil is Brasília.
+
+================================================================================
+
+=== Modelo: tinyllama:1.1b ===
+Status: Sucesso
+Tempo(s): 62.54
+RAM(MB): 2856.16
+CPU(%): 100.0
+
+Resposta completa:
+O país brasileiro é conhecido como "a capital do mundo", pois possui um poderoso sistema de busca e
+encomenda, que está localizado em São Paulo. O Brasil também possui uma economia crescente, com 193
+milhões de pessoas em 2020, que fazem dele o segundo maior país do mundo e a terceira maior do
+mundo, atrás apenas dos EUA (198 milhões) e da Rússia (145 milhões).
+
+================================================================================
+
+=== Modelo: phi4-mini:latest ===
+Status: Falha (model requires more )
+Tempo(s): -
+RAM(MB): -
+CPU(%): -
+
+Resposta completa:
+
+
+================================================================================
+
+=== Modelo: orca-mini:3b ===
+Status: Falha (model requires more )
+Tempo(s): -
+RAM(MB): -
+CPU(%): -
+
+Resposta completa:
+
+
+================================================================================
+
+=== Modelo: llama3.2:1b ===
+Status: Sucesso
+Tempo(s): 63.59
+RAM(MB): 2556.65
+CPU(%): 100.0
+
+Resposta completa:
+A capital do Brasil é Brasília.
+
+================================================================================
+
+=== Modelo: gemma2:2b ===
+Status: Falha (model requires more )
+Tempo(s): -
+RAM(MB): -
+CPU(%): -
+
+Resposta completa:
+
+
+================================================================================
+
+=== Modelo: qwen3:0.6b ===
+Status: Sucesso
+Tempo(s): 68.56
+RAM(MB): 2428.55
+CPU(%): 100.0
+
+Resposta completa:
+<think> Okay, the user is asking for the capital of Brazil. I need to make sure I'm providing the
+correct information. First, I remember that Brazil's capital is Brasília. But wait, let me double-
+check. I think the capital is Brasília, but I should also mention that it's the capital of the
+country. There's a lot of information about it, so I need to confirm the correct answer without any
+confusion. Also, maybe include that it's located in the central region of the country. That way, the
+user gets all the necessary details. I should keep it straightforward and accurate. </think>  A
+capital do Brasil é **Brasília**.
+
+================================================================================
+
+=== Modelo: llama3.2:latest ===
+Status: Falha (model requires more )
+Tempo(s): -
+RAM(MB): -
+CPU(%): -
+
+Resposta completa:
+
+
+================================================================================
+
+=== Modelo: qwen3:1.7b ===
+Status: Sucesso
+Tempo(s): 301.45
+RAM(MB): 3229.85
+CPU(%): 100.0
+
+Resposta completa:
+<think> Okay, the user is asking, "Qual a Capital do Brasil?" which means "What is the capital of
+Brazil?" in Portuguese. I need to provide the correct answer.  First, I remember that the capital of
+Brazil is Brasília. But wait, I should confirm that. Let me think. Brazil is a country in South
+America, and its capital is indeed Brasília. It's a city that was built in the 1950s as a new
+capital, replacing the old capital in Rio de Janeiro. So, the answer is Brasília.  I should also
+mention why it's important. Brasília is the largest city in Brazil and the political, economic, and
+cultural center. It's known for its unique architecture and the Amazon River. Maybe add a bit about
+its history, like the transition from Rio to Brasília.  Wait, the user might be testing if I know
+the answer. I should make sure the answer is accurate. Also, check if there's any confusion with
+other capitals. For example, the capital of Argentina is Buenos Aires, and of Peru is Lima. Brazil's
+is Brasília. No mistakes there.  So the answer is Brasília. Keep it simple and clear. Maybe a
+sentence stating that the capital is Brasília and mention its significance. Alright, that should
+cover it. </think>  A capital do Brasil é **Brasília**. Ela foi construída em 1956 como nova
+capital, substituindo o antigo centro político de Rio de Janeiro. Brasília é a maior cidade do
+Brasil e o centro político, econômico e cultural do país. É conhecida por suas estruturas
+arquitetônicas únicas, como o Palácio do Governo e o Parque do Ibirapuera, além de sua localização
+na região do Amazonas.
+
+================================================================================
+

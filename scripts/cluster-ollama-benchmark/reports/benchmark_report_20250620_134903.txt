@@ -1,0 +1,33 @@
+=== Benchmark Report ===
+Data: 2025-06-20 13:49:03
+
+Prompt utilizado: "Qual é a capital do Brasil?"
+
+--------------------------------------------------------------------------------------------------------------
+Modelo               | Tempo(s) | RAM(MB) | CPU(%) | Status     | Resposta resumida
+--------------------------------------------------------------------------------------------------------------
+yi-coder:1.5b        | 26.99    | 3008.0  | 100.0  | Sucesso    | 
+starcoder:1b         | 367.28   | 3008.0  | 100.0  | Sucesso    | 
+deepseek-coder:1.3b  | 81.17    | 2962.9  | 100.0  | Sucesso    | 
+smollm2:360m         | 46.88    | 2961.5  | 100.0  | Sucesso    | 
+tinyllama:1.1b       | 35.89    | 2560.1  | 100.0  | Sucesso    | 
+phi4-mini:latest     | -        | -       | -      | Falha (model requ) | 
+orca-mini:3b         | -        | -       | -      | Falha (model requ) | 
+gemma2:2b            | -        | -       | -      | Falha (model requ) | 
+llama3.2:1b          | 74.07    | 2312.9  | 100.0  | Sucesso    | 
+qwen3:0.6b           | 69.13    | 2311.1  | 100.0  | Sucesso    | 
+llama3.2:latest      | -        | -       | -      | Falha (model requ) | 
+qwen3:1.7b           | 228.49   | 3079.0  | 100.0  | Sucesso    | 
+--------------------------------------------------------------------------------------------------------------
+
+=== Modelo: yi-coder:1.5b ===
+Status: Sucesso
+Tempo(s): 42.7
+RAM(MB): 3203.82
+CPU(%): 100.0
+
+Resposta completa:
+
+
+================================================================================
+
