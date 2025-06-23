@@ -1,0 +1,154 @@
+=== Benchmark Report ===
+Data: 2025-06-20 15:30:06
+
+Prompt utilizado: "Qual é a capital do Brasil?"
+
+--------------------------------------------------------------------------------------------------------------
+Modelo               | Tempo(s) | RAM(MB) | CPU(%) | Status     | Resposta resumida
+--------------------------------------------------------------------------------------------------------------
+yi-coder:1.5b        | 41.52    | 3305.2  | 100.0  | Sucesso    | 
+starcoder:1b         | 98.01    | 3293.6  | 100.0  | Sucesso    | 
+deepseek-coder:1.3b  | 121.48   | 3224.3  | 100.0  | Sucesso    | 
+smollm2:360m         | 84.33    | 3224.3  | 100.0  | Sucesso    | 
+tinyllama:1.1b       | 45.99    | 2811.7  | 100.0  | Sucesso    | 
+phi4-mini:latest     | -        | -       | -      | Falha (model requires more ) | 
+orca-mini:3b         | -        | -       | -      | Falha (model requires more ) | 
+llama3.2:1b          | 62.66    | 2525.0  | 100.0  | Sucesso    | 
+gemma2:2b            | -        | -       | -      | Falha (model requires more ) | 
+qwen3:0.6b           | 64.50    | 2416.9  | 100.0  | Sucesso    | 
+llama3.2:latest      | -        | -       | -      | Falha (model requires more ) | 
+qwen3:1.7b           | 245.95   | 3200.2  | 100.0  | Sucesso    | 
+--------------------------------------------------------------------------------------------------------------
+
+=== Modelo: yi-coder:1.5b ===
+Status: Sucesso
+Tempo(s): 41.52
+RAM(MB): 3305.24
+CPU(%): 100.0
+
+Resposta completa:
+
+
+================================================================================
+
+=== Modelo: starcoder:1b ===
+Status: Sucesso
+Tempo(s): 98.01
+RAM(MB): 3293.59
+CPU(%): 100.0
+
+Resposta completa:
+
+
+================================================================================
+
+=== Modelo: deepseek-coder:1.3b ===
+Status: Sucesso
+Tempo(s): 121.48
+RAM(MB): 3224.29
+CPU(%): 100.0
+
+Resposta completa:
+
+
+================================================================================
+
+=== Modelo: smollm2:360m ===
+Status: Sucesso
+Tempo(s): 84.33
+RAM(MB): 3224.29
+CPU(%): 100.0
+
+Resposta completa:
+
+
+================================================================================
+
+=== Modelo: tinyllama:1.1b ===
+Status: Sucesso
+Tempo(s): 45.99
+RAM(MB): 2811.73
+CPU(%): 100.0
+
+Resposta completa:
+
+
+================================================================================
+
+=== Modelo: phi4-mini:latest ===
+Status: Falha (model requires more )
+Tempo(s): -
+RAM(MB): -
+CPU(%): -
+
+Resposta completa:
+
+
+================================================================================
+
+=== Modelo: orca-mini:3b ===
+Status: Falha (model requires more )
+Tempo(s): -
+RAM(MB): -
+CPU(%): -
+
+Resposta completa:
+
+
+================================================================================
+
+=== Modelo: llama3.2:1b ===
+Status: Sucesso
+Tempo(s): 62.66
+RAM(MB): 2524.97
+CPU(%): 100.0
+
+Resposta completa:
+
+
+================================================================================
+
+=== Modelo: gemma2:2b ===
+Status: Falha (model requires more )
+Tempo(s): -
+RAM(MB): -
+CPU(%): -
+
+Resposta completa:
+
+
+================================================================================
+
+=== Modelo: qwen3:0.6b ===
+Status: Sucesso
+Tempo(s): 64.5
+RAM(MB): 2416.91
+CPU(%): 100.0
+
+Resposta completa:
+
+
+================================================================================
+
+=== Modelo: llama3.2:latest ===
+Status: Falha (model requires more )
+Tempo(s): -
+RAM(MB): -
+CPU(%): -
+
+Resposta completa:
+
+
+================================================================================
+
+=== Modelo: qwen3:1.7b ===
+Status: Sucesso
+Tempo(s): 245.95
+RAM(MB): 3200.23
+CPU(%): 100.0
+
+Resposta completa:
+
+
+================================================================================
+
