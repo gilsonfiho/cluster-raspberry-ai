@@ -1,0 +1,16 @@
+=== Benchmark Report ===
+Data: 2025-06-20 13:28:58
+
+Prompt utilizado: "Qual é a capital do Brasil?"
+
+---------------------------------------------------------------
+| Modelo            | Tempo(s) | RAM(MB) | CPU(%) | Status    |
+---------------------------------------------------------------
+| phi4-mini:latest   |   -     |   -    |   -   | Falha (model requ) |
+| orca-mini:3b       |   -     |   -    |   -   | Falha (model requ) |
+| llama3.2:1b        | 63.43    | 2348.43 | 100.0  | Sucesso   |
+| gemma2:2b          |   -     |   -    |   -   | Falha (model requ) |
+| qwen3:0.6b         | 75.65    | 2260.35 | 100.0  | Sucesso   |
+| llama3.2:latest    |   -     |   -    |   -   | Falha (model requ) |
+| qwen3:1.7b         | 286.13   | 3024.26 | 100.0  | Sucesso   |
+---------------------------------------------------------------

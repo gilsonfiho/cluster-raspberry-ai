@@ -1,0 +1,170 @@
+=== Benchmark Report ===
+Data: 2025-06-20 16:37:07
+
+Prompt utilizado: "Qual é a Capital do Brasil?"
+
+--------------------------------------------------------------------------------------------------------------
+Modelo               | Tempo(s) | RAM(MB) | CPU(%) | Status     | Resposta resumida
+--------------------------------------------------------------------------------------------------------------
+yi-coder:1.5b        | -        | -       | -      | Falha (model requires more ) | 
+starcoder:1b         | 58.53    | 1794.6  | 100.0  | Sucesso    | (em %.2f)".format(capital)) print("O valor da Receita Federa...
+deepseek-coder:1.3b  | -        | -       | -      | Falha (model requires more ) | 
+smollm2:360m         | 26.38    | 2033.2  | 100.0  | Sucesso    | The capital of Brazil is Brasília.
+tinyllama:1.1b       | 31.26    | 2851.9  | 100.0  | Sucesso    | Sua capital e o Rio de Janeiro, localizado no estado do Rio ...
+phi4-mini:latest     | -        | -       | -      | Falha (model requires more ) | 
+orca-mini:3b         | -        | -       | -      | Falha (model requires more ) | 
+gemma2:2b            | -        | -       | -      | Falha (model requires more ) | 
+llama3.2:1b          | 65.55    | 2613.3  | 100.0  | Sucesso    | A capital do Brasil é Brasília.
+qwen3:0.6b           | 56.65    | 2613.4  | 100.0  | Sucesso    | <think> Okay, the user is asking for the capital of Brazil. ...
+llama3.2:latest      | -        | -       | -      | Falha (model requires more ) | 
+qwen3:1.7b           | 223.51   | 3287.5  | 100.0  | Sucesso    | <think> Okay, the user is asking for the capital of Brazil. ...
+--------------------------------------------------------------------------------------------------------------
+
+=== Modelo: yi-coder:1.5b ===
+Status: Falha (model requires more )
+Tempo(s): -
+RAM(MB): -
+CPU(%): -
+
+Resposta completa:
+
+
+================================================================================
+
+=== Modelo: starcoder:1b ===
+Status: Sucesso
+Tempo(s): 58.53
+RAM(MB): 1794.63
+CPU(%): 100.0
+
+Resposta completa:
+(em %.2f)".format(capital)) print("O valor da Receita Federal é de R${}.".format(receita_federal))
+print("A porcentagem da RECEITA ESTIMADA pela Casa é de {}%".format(porcentagem_rec)) print("A soma
+das RECEITAS Estimadas foi de R${}".format(receitas_estimada)) print("O total da receita estimada é
+de R${}".format(total_estimada)) print("Seu salário atual é de R${}.".format(salario))
+
+================================================================================
+
+=== Modelo: deepseek-coder:1.3b ===
+Status: Falha (model requires more )
+Tempo(s): -
+RAM(MB): -
+CPU(%): -
+
+Resposta completa:
+
+
+================================================================================
+
+=== Modelo: smollm2:360m ===
+Status: Sucesso
+Tempo(s): 26.38
+RAM(MB): 2033.16
+CPU(%): 100.0
+
+Resposta completa:
+The capital of Brazil is Brasília.
+
+================================================================================
+
+=== Modelo: tinyllama:1.1b ===
+Status: Sucesso
+Tempo(s): 31.26
+RAM(MB): 2851.89
+CPU(%): 100.0
+
+Resposta completa:
+Sua capital e o Rio de Janeiro, localizado no estado do Rio de Janeiro.
+
+================================================================================
+
+=== Modelo: phi4-mini:latest ===
+Status: Falha (model requires more )
+Tempo(s): -
+RAM(MB): -
+CPU(%): -
+
+Resposta completa:
+
+
+================================================================================
+
+=== Modelo: orca-mini:3b ===
+Status: Falha (model requires more )
+Tempo(s): -
+RAM(MB): -
+CPU(%): -
+
+Resposta completa:
+
+
+================================================================================
+
+=== Modelo: gemma2:2b ===
+Status: Falha (model requires more )
+Tempo(s): -
+RAM(MB): -
+CPU(%): -
+
+Resposta completa:
+
+
+================================================================================
+
+=== Modelo: llama3.2:1b ===
+Status: Sucesso
+Tempo(s): 65.55
+RAM(MB): 2613.33
+CPU(%): 100.0
+
+Resposta completa:
+A capital do Brasil é Brasília.
+
+================================================================================
+
+=== Modelo: qwen3:0.6b ===
+Status: Sucesso
+Tempo(s): 56.65
+RAM(MB): 2613.37
+CPU(%): 100.0
+
+Resposta completa:
+<think> Okay, the user is asking for the capital of Brazil. I need to make sure I'm providing the
+correct information. Brazil's capital is Rio de Janeiro. Let me double-check: yes, Rio de Janeiro is
+the capital. I don't see any errors here. It's important to state the correct city and confirm the
+answer to avoid any confusion. </think>  A Capital do Brasil é **Rio de Janeiro**.
+
+================================================================================
+
+=== Modelo: llama3.2:latest ===
+Status: Falha (model requires more )
+Tempo(s): -
+RAM(MB): -
+CPU(%): -
+
+Resposta completa:
+
+
+================================================================================
+
+=== Modelo: qwen3:1.7b ===
+Status: Sucesso
+Tempo(s): 223.51
+RAM(MB): 3287.54
+CPU(%): 100.0
+
+Resposta completa:
+<think> Okay, the user is asking for the capital of Brazil. Let me think. I remember from school
+that Brazil's capital is Brasília. But wait, I should double-check to make sure. The country is
+divided into states, and the capital is the largest city. Brasília was built in the 1950s as the
+capital, replacing Rio de Janeiro. So yes, it's the capital. I should confirm the details: it's the
+largest city, the political and economic center, and it's known for its unique architecture and the
+presidential palace. Also, the name "Brasília" comes from the Portuguese word for "Brazil." I need
+to make sure the answer is accurate and clear. No need to add extra info unless the user asks for
+it. Just state the capital and a brief explanation. </think>  A capital do Brasil é **Brasília**.
+Ela foi construída em 1956 como a nova capital do país, substituindo Rio de Janeiro, e é o maior
+cidade do Brasil, sendo o centro político, econômico e cultural do país. A cidade é conhecida por
+sua arquitetura única e o palácio presidencial, que é o principal símbolo da capital.
+
+================================================================================
+
