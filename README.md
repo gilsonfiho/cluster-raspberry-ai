@@ -144,14 +144,6 @@ curl http://localhost:11434/api/generate -d '{
 - `scripts/` – Scripts Bash.
 
 
-## ✅ Status atual
-
-- [x] Ollama rodando via
-- [x] Modelo Qwen3:0.6b testado com 1.9 GB RAM
-- [x] Modelo Qwen3:1.7b testado com 3.1 GB RAM
-- [x] Testes com o N8N usando a master do Cluster e Docker
-
-
 ## 🤖Atualizações de Configurações, Testes, Relatórios e Scripts Automaatizados em breve
 
 
@@ -234,4 +226,50 @@ http://<IP_DO_MASTER>:5678
 - [x] N8N adicionado à stack com autenticação básica
 - [x] Fluxo de automação com IA usando o modelo local do Ollama no N8N
 - [ ] Painel web integrado com interface personalizada (em desenvolvimento)
+
+
+## 🚀 Novas funcionalidades: Benchmark de LLMs no Cluster
+
+O projeto agora possui um **módulo de benchmark automatizado** para avaliar o desempenho de modelos LLM instalados via [Ollama](https://ollama.com/) diretamente no Cluster de Raspberry Pi.
+
+### 🔧 Funcionalidades implementadas:
+
+- ✅ Detecção automática de todos os modelos instalados no Ollama
+- ✅ Filtragem dos modelos compatíveis com o hardware (ex.: Raspberry Pi 4 com 4GB de RAM)
+- ✅ Execução de benchmarks com coleta das seguintes métricas:
+  - ⏳ Tempo total de inferência
+  - 🔥 Pico de uso de CPU
+  - 🧠 Pico e consumo médio de memória RAM
+  - 📜 Resultado da inferência com o prompt definido
+- ✅ Geração de relatórios completos em `.txt` com todos os dados
+- ✅ Arquivo de configuração (`config.yaml`) para customizar:
+  - Prompt utilizado
+  - Intervalo de coleta de métricas
+  - Lista de modelos a serem testados
+  - Outras opções de monitoramento
+
+### 🤖 Modelos testados no benchmark:
+
+- **yi-coder:1.5b** — 866 MB
+- **starcoder:1b** — 726 MB
+- **deepseek-coder:1.3b** — 776 MB
+- **smollm2:360m** — 725 MB
+- **tinyllama:1.1b** — 637 MB
+- **phi4-mini** — 2.5 GB
+- **orca-mini:3b** — 2.0 GB
+- **gemma2:2b** — 1.6 GB
+- **llama3.2:1b** — 1.3 GB
+- **qwen3:0.6b** — 522 MB
+- **qwen3:1.7b** — 1.4 GB
+- **llama3.2:latest** — 2.0 GB
+
+### 🧠 Próximas melhorias:
+
+- 🔗 Integração com **LangChain** para:
+  - Construção de chains de prompts para testes mais complexos
+  - Simulação de agentes e fluxos multi-etapas
+  - Avaliação de raciocínio, recuperação de informações e execução de tarefas compostas
+- 📄 Produção de um artigo técnico comparando desempenho em diferentes modelos de Raspberry Pi
+
+---
 
