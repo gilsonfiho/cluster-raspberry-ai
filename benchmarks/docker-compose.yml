@@ -1,0 +1,39 @@
+version: "3.8"
+
+# Configuração para execução de benchmarks
+# Use este arquivo para rodar testes de desempenho isolados
+
+services:
+  ollama-benchmark:
+    image: ollama/ollama:latest
+    ports:
+      - "11435:11434"  # Porta diferente para evitar conflito
+    volumes:
+      - ollama-bench:/root/.ollama
+      - ./reports:/app/reports
+    deploy:
+      replicas: 1
+      placement:
+        constraints:
+          - node.hostname == rpi-master
+      resources:
+        limits:
+          cpus: '3'
+          memory: 3800M
+        reservations:
+          cpus: '2'
+          memory: 3000M
+    networks:
+      - llm-cluster
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:11434/api/tags"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+volumes:
+  ollama-bench:
+
+networks:
+  llm-cluster:
+    driver: overlay
