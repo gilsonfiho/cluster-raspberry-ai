@@ -1,0 +1,38 @@
+version: "3.8"
+
+# Configuração isolada do serviço Ollama
+# Use este arquivo quando quiser fazer deploy apenas do Ollama
+
+services:
+  ollama:
+    image: ollama/ollama:latest
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama:/root/.ollama
+    deploy:
+      replicas: 1
+      placement:
+        constraints:
+          - node.hostname == rpi-master
+      resources:
+        limits:
+          cpus: '2'
+          memory: 3500M
+        reservations:
+          cpus: '1'
+          memory: 2048M
+    networks:
+      - llm-cluster
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:11434/api/tags"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+volumes:
+  ollama:
+
+networks:
+  llm-cluster:
+    driver: overlay
